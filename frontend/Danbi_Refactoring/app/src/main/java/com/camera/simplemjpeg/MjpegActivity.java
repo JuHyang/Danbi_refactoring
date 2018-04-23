@@ -77,6 +77,8 @@ public class MjpegActivity extends Activity {
 
         ip = intent.getStringExtra("ip");
         ip_port = intent.getIntExtra("port2", 0);
+        ip = "192.168.0.1";
+        ip_port = 3333;
         Log.v("ip", ip);
         Log.v("ip_port", String.valueOf(ip_port));
 
