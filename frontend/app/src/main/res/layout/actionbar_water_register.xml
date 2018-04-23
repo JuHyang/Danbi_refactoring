@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#528cd8"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp">
+
+    <ImageButton
+        android:layout_marginTop="3dp"
+        android:layout_marginLeft="20dp"
+        android:background="#00000000"
+        android:id="@+id/imageButton_register_back"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        app:srcCompat="@drawable/back_arrow_white"
+        />
+
+    <TextView
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@id/imageButton_register_back"
+        android:textColor="#FFFFFF"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:text="물 주기 추가" />
+
+    <TextView
+        android:layout_marginRight="20dp"
+        android:layout_alignParentRight="true"
+        android:textColor="#FFFFFF"
+        android:id="@+id/textView_register_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:text="저장" />
+</RelativeLayout>

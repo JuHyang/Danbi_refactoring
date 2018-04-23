@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.seed.android.danbi">
+
+    <!-- [START retrofit_permission] -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
+    <permission android:name="android.permission.INTERNET" />
+
+    <!-- [END retrofit_permission] -->
+
+
+    <!-- [START notification_permission] -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!-- [END notification_permission] -->
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+
+        <!-- Start SugarOrm(DB) information -->
+        <meta-data
+            android:name="DATABASE"
+            android:value="danbi.db" />
+        <meta-data
+            android:name="VERSION"
+            android:value="1" />
+        <meta-data
+            android:name="QUERY_LOG"
+            android:value="true" />
+        <meta-data
+            android:name="DOMAIN_PACKAGE_NAME"
+            android:value="com.seed.android.danbi" />
+        <!-- End SugarOrm(DB) information -->
+
+        <activity android:name=".MainActivity" />
+        <activity android:name=".SplashActivity">
+
+        </activity>
+        <activity android:name=".Water_Register">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

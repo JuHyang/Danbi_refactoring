@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.seed.android.danbi.Water_Register">
+
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TimePicker
+            android:id="@+id/timePicker"
+            android:layout_width="wrap_content"
+            android:layout_height="95dp" />
+
+
+        <RelativeLayout
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="20dp"
+                android:fontFamily="@font/junggt130"
+                android:text="해당 [물 주기]가 활성화 되어있습니다."
+                android:textColor="#A9A9A9"
+                android:textSize="12dp" />
+
+            <Switch
+                android:id="@+id/switch_register"
+                android:checked="true"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_gravity="right"
+                android:layout_marginRight="20dp"
+                android:thumb="@drawable/switch_bg" />
+
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/add_alarm_paragraph_line" />
+
+        <RelativeLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="20dp"
+                android:fontFamily="@font/junggt150"
+                android:text="반복"
+                android:textColor="#000000"
+                android:textSize="18dp" />
+
+            <CheckBox
+                android:id="@+id/checkBox_repeat"
+                android:layout_width="wrap_content"
+                android:layout_height="18dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_gravity="right"
+                android:layout_marginRight="20dp"
+                android:layout_weight="1"
+                android:text="매일"
+                android:buttonTint="#6AAFFF"
+                android:textColor="#A9A9A9"/>
+
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/add_alarm_paragraph_line" />
+
+        <RelativeLayout
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="20dp"
+                android:fontFamily="@font/junggt150"
+                android:text="분무 지속 시간"
+                android:textColor="#000000"
+                android:textSize="18dp" />
+
+            <TextView
+                android:id="@+id/textView_repeat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@id/minute"
+                android:layout_marginRight="5dp"
+                android:fontFamily="@font/junggt150"
+                android:text="10"
+                android:textColor="#6AAFFF"
+                android:textSize="18dp" />
+
+            <TextView
+                android:id="@+id/minute"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginRight="20dp"
+                android:fontFamily="@font/junggt150"
+                android:text="분"
+                android:textColor="#A9A9A9"
+                android:textSize="18dp" />
+
+        </RelativeLayout>
+
+        <SeekBar
+            android:layout_marginTop="10dp"
+            android:id="@+id/seekBar_water_min"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="10"
+            android:progress="5"
+            android:thumb="@drawable/seekbar_thumb_register"
+            android:progressDrawable="@drawable/seekbar_progress_register"/>
+
+        <LinearLayout
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/junggt130"
+                android:text="0분"
+                android:layout_weight="1"
+                android:textColor="#A9A9A9"
+                android:textSize="18dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/junggt130"
+                android:text="5분"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="#A9A9A9"
+                android:textSize="18dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/junggt130"
+                android:text="10분"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textColor="#A9A9A9"
+                android:textSize="18dp" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/add_alarm_paragraph_line" />
+
+        <RelativeLayout
+            android:layout_marginTop="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="20dp"
+                android:fontFamily="@font/junggt150"
+                android:text="알림"
+                android:textColor="#000000"
+                android:textSize="18dp" />
+
+
+            <RadioButton
+                android:checked="false"
+                android:id="@+id/radioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="18dp"
+                android:layout_marginRight="20dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_gravity="right"
+                android:text="없음"
+                android:buttonTint="#6AAFFF"
+                android:textColor="#A9A9A9"/>
+
+        </RelativeLayout>
+
+        <CheckBox
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="40dp"
+            android:id="@+id/checkbox_before_5min"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="물 주기 5분 전 알림"
+            android:textSize="18dp"
+            android:buttonTint="#6AAFFF"
+            android:textColor="#A9A9A9"/>
+
+        <CheckBox
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="40dp"
+            android:id="@+id/checkbox_water_finish"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="물 주기 완료 알림"
+            android:textSize="18dp"
+            android:buttonTint="#6AAFFF"
+            android:textColor="#A9A9A9"/>
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:textSize="11dp"
+            android:fontFamily="@font/junggt140"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#898989"
+            android:text="(알림 상세 설정은 상단 좌측 메뉴의 [알림 설정]에서 하실 수 있습니다.)" />
+
+
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>
