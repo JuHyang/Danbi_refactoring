@@ -30,9 +30,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         InitView();
-        AboutView();
         SetCustomActionBar();
-
+        AboutView();
     }
 
     public void InitView() {
@@ -55,6 +54,24 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    private void SetCustomActionBar () {
+        ActionBar actionBar = getSupportActionBar();
+
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(false);
+        actionBar.setDisplayShowTitleEnabled(false);
+
+        View actionBarView = LayoutInflater.from(this).inflate(R.layout.actionbar_main, null);
+        actionBar.setCustomView(actionBarView);
+
+        toolbar = (Toolbar) actionBarView.getParent();
+        toolbar.setContentInsetsAbsolute(0,0);
+
+        ActionBar.LayoutParams params = new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.MATCH_PARENT);
+        actionBar.setCustomView(actionBarView, params);
+
     }
 
     public class SectionPagerAdapter extends FragmentPagerAdapter {
@@ -96,6 +113,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
+        public int getItemPosition(Object object) {
+            return POSITION_NONE;
+        }
+
+        @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
@@ -109,23 +131,5 @@ public class MainActivity extends AppCompatActivity {
             }
             return null;
         }
-    }
-
-    private void SetCustomActionBar () {
-        ActionBar actionBar = getSupportActionBar();
-
-        actionBar.setDisplayShowCustomEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(false);
-        actionBar.setDisplayShowTitleEnabled(false);
-
-        View actionBarView = LayoutInflater.from(this).inflate(R.layout.actionbar_main, null);
-        actionBar.setCustomView(actionBarView);
-
-        toolbar = (Toolbar) actionBarView.getParent();
-        toolbar.setContentInsetsAbsolute(0,0);
-
-        ActionBar.LayoutParams params = new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.MATCH_PARENT);
-        actionBar.setCustomView(actionBarView, params);
-
     }
 }

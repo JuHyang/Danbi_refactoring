@@ -2,13 +2,19 @@ package com.seed.android.danbi;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.github.clans.fab.FloatingActionButton;
+import com.orm.query.Select;
 
 import java.util.ArrayList;
 
@@ -25,6 +31,8 @@ public class Fragment_Water extends Fragment {
     private RecyclerView recyclerView_water;
     private RecyclerView.Adapter water_CustomAdapter;
     private RecyclerView.LayoutManager waterLayoutManager;
+
+    private FloatingActionButton fab;
 
     public Fragment_Water(Context context) {
         this.context = context;
@@ -43,7 +51,7 @@ public class Fragment_Water extends Fragment {
     }
 
     public void InitModel () {
-        waterDatas = (ArrayList<Water_AlarmData>) Water_AlarmData.listAll(Water_AlarmData.class);
+        waterDatas = (ArrayList<Water_AlarmData>) Select.from(Water_AlarmData.class).orderBy("hour, minute").list();
     }
 
     public void InitView (View view) {
@@ -59,9 +67,17 @@ public class Fragment_Water extends Fragment {
         water_CustomAdapter = new Water_CustomAdapter(waterDatas);
         recyclerView_water.setAdapter(water_CustomAdapter);
 
+        fab = view.findViewById(R.id.fab);
     }
 
     public void AboutView () {
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent (context, Water_Register.class);
+                startActivity(intent);
+            }
+        });
         recyclerView_water.addOnItemTouchListener(new RecyclerItemClickListener(context, recyclerView_water,
                 new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
@@ -70,8 +86,28 @@ public class Fragment_Water extends Fragment {
 
                     @Override
                     public void onLongItemClick(View view, int position) {
-                        // 삭제다이얼로그
+                        OpenDeleteDialog(position);
                     }
                 }));
+    }
+
+    public void OpenDeleteDialog (final int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("삭제");
+        builder.setMessage("삭제 하시겠습니까 ?");
+        builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Water_AlarmData temp = waterDatas.get(position);
+                temp.delete();
+                water_CustomAdapter.notifyDataSetChanged();
+            }
+        });
+        builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
     }
 }

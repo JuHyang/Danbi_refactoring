@@ -9,13 +9,13 @@ import retrofit2.http.Path;
  */
 
 public interface ServerInterface {
-    @GET("Water/{onoff}/{minute}")
+    @GET("/Water/{onoff}/{minute}")
     Call<Water_AlarmData> GetData(@Path("onoff") String onoff,
                               @Path("minute") String minute);
 
-    @GET("Tem")
+    @GET("/Tem")
     Call<Temperature_model> GetTemp ();
 
-    @GET("door/{onoff}")
+    @GET("/door/{onoff}")
     Call<Door_model> DoorOpen(@Path("onoff") String onoff);
 }
