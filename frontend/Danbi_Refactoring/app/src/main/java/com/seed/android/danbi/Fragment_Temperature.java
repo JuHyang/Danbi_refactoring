@@ -1,14 +1,19 @@
 package com.seed.android.danbi;
 
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +39,9 @@ public class Fragment_Temperature extends Fragment {
     private ImageButton imageButton_refresh;
     private TextView textView_temp, textView_temp_, textView_status_temp, textView_species_temp, textView_proper_temp;
     private TextView textView_hum, textView_hum_, textView_status_hum, textView_species_hum, textView_proper_hum;
+    private Switch switch_temp_auto;
+
+    private AlarmManager tempAlarmManager;
 
 
     public Fragment_Temperature (Context context) {
@@ -55,7 +63,7 @@ public class Fragment_Temperature extends Fragment {
     public void InitModel() {
         temp_datas = (ArrayList) Temperature_SettingData.listAll(Temperature_SettingData.class);
         if (temp_datas.size() == 0) {
-            temperature_settingData = new Temperature_SettingData(25, 25);
+            temperature_settingData = new Temperature_SettingData(25, 25, false);
             temperature_settingData.save();
         } else {
             temperature_settingData = temp_datas.get(0);
@@ -65,6 +73,8 @@ public class Fragment_Temperature extends Fragment {
 
     public void InitVIew(View view) {
         imageButton_refresh = view.findViewById(R.id.imageButton_refresh);
+
+        switch_temp_auto = view.findViewById(R.id.switch_temp_auto);
 
         textView_temp = view.findViewById(R.id.textView_temp);
         textView_temp_ = view.findViewById(R.id.textView_temp_);
@@ -86,6 +96,43 @@ public class Fragment_Temperature extends Fragment {
                 GetTempData();
             }
         });
+
+        switch_temp_auto.setChecked(temperature_settingData.auto);
+        switch_temp_auto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (switch_temp_auto.isChecked()) {
+                    AutoTempGetData();
+                    temperature_settingData.auto = true;
+                } else {
+                    AlarmTempCancel();
+                    temperature_settingData.auto = false;
+                }
+                temperature_settingData.save();
+            }
+        });
+    }
+
+    public void AutoTempGetData () {
+        Log.d("확인", "AutoGetData 입장");
+        tempAlarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent (context, Temperature_AlarmReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 1, intent, 0);
+
+        tempAlarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 3600000, pendingIntent);
+//        lmsAlarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 10000, pendingIntent);
+    }
+
+    public void AlarmTempCancel() {
+        Log.d("확인", "AlarmCancel 입장");
+//        AlarmManager alarmManager = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+        tempAlarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(context, Temperature_AlarmReceiver.class);
+        PendingIntent sender = PendingIntent.getBroadcast(context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        if (sender != null) {
+            tempAlarmManager.cancel(sender);
+            sender.cancel() ;
+        }
     }
 
     public void GetTempData () {

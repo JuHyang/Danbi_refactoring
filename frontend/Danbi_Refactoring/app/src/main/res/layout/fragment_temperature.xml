@@ -213,4 +213,14 @@
         tools:layout_editor_absoluteY="445dp" />
 
 
+    <Switch
+        android:id="@+id/switch_temp_auto"
+        android:layout_width="56dp"
+        android:layout_height="35dp"
+        android:layout_weight="1"
+        android:thumb="@drawable/switch_bg"
+        tools:layout_editor_absoluteX="251dp"
+        tools:layout_editor_absoluteY="41dp" />
+
+
 </android.support.constraint.ConstraintLayout>

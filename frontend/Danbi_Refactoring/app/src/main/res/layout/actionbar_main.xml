@@ -26,11 +26,12 @@
         android:layout_height="39dp"
         android:background="@android:color/transparent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/imageButton_hamburger"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/actionbar_cctv_icon" />
+        <!--app:layout_constraintEnd_toStartOf="@+id/imageButton_hamburger"-->
 
-    <ImageButton
+
+    <!-- <ImageButton
         android:layout_marginRight="10dp"
         android:id="@+id/imageButton_hamburger"
         android:layout_width="42dp"
@@ -38,7 +39,6 @@
         android:background="@android:color/transparent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/actionbar_hamburger_icon" />
+        app:layout_constraintTop_toTopOf="parent" -->
 
 </android.support.constraint.ConstraintLayout>

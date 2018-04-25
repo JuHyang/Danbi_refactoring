@@ -74,6 +74,28 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+//    @Override
+
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//
+//        MenuInflater inflater = getMenuInflater();
+//
+//        inflater.inflate(R.menu.menu_main, menu);
+//
+//        return super.onCreateOptionsMenu(menu);
+//
+//    }
+//
+//    public boolean onOptionsItemSelected(MenuItem item){
+//        switch (item.getItemId()){
+//            case 1:
+//                Toast.makeText(this, "설정 클릭", Toast.LENGTH_SHORT).show();
+//                return true;
+//        }
+//        return false;
+//    }
+
+
     public class SectionPagerAdapter extends FragmentPagerAdapter {
 
         public SectionPagerAdapter(FragmentManager fm) {

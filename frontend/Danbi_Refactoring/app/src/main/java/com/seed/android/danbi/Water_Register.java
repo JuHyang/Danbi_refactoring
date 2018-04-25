@@ -38,7 +38,6 @@ public class Water_Register extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_water_register);
 
-
         InitView();
         SetCustomActionBar();
         AboutView();

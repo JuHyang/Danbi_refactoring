@@ -9,11 +9,13 @@ import com.orm.SugarRecord;
 public class Temperature_SettingData extends SugarRecord {
     int temperature;
     int humidity;
+    boolean auto;
 
     public Temperature_SettingData() {}
 
-    public Temperature_SettingData(int temperature, int humidity) {
+    public Temperature_SettingData(int temperature, int humidity, boolean auto) {
         this.temperature = temperature;
         this.humidity = humidity;
+        this.auto = auto;
     }
 }
