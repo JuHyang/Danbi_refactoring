@@ -64,7 +64,7 @@ public class Fragment_Water extends Fragment {
         recyclerView_water.setLayoutManager(waterLayoutManager);
 
         // specify an adapter (see also next example)
-        water_CustomAdapter = new Water_CustomAdapter(waterDatas);
+        water_CustomAdapter = new Water_CustomAdapter(waterDatas, context);
         recyclerView_water.setAdapter(water_CustomAdapter);
 
         fab = view.findViewById(R.id.fab);

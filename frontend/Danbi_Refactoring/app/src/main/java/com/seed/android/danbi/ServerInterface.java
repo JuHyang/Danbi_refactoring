@@ -10,8 +10,8 @@ import retrofit2.http.Path;
 
 public interface ServerInterface {
     @GET("/Water/{onoff}/{minute}")
-    Call<Water_AlarmData> GetData(@Path("onoff") String onoff,
-                              @Path("minute") String minute);
+    Call<String> Watering(@Path("onoff") boolean onoff,
+                              @Path("during") int during);
 
     @GET("/Tem")
     Call<Temperature_model> GetTemp ();

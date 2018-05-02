@@ -1,5 +1,9 @@
 package com.seed.android.danbi;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +18,8 @@ import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
+
+import java.util.Calendar;
 
 public class Water_Register extends AppCompatActivity {
 
@@ -121,11 +127,42 @@ public class Water_Register extends AppCompatActivity {
             public void onClick(View v) {
                 water_alarmData = new Water_AlarmData(hour_timePicker, minute_timePicker, during_seekBar, bool_register, bool_repeat);
                 water_alarmData.save();
-                //알람 등록
+                Watering();
                 finish();
             }
         });
 
+    }
+
+    public void Watering () {
+        AlarmManager waterAlarmManager;
+        waterAlarmManager = (AlarmManager) Water_Register.this.getSystemService(Context.ALARM_SERVICE);
+        long id = water_alarmData.getId();
+        Intent intent = new Intent(Water_Register.this, Water_AlarmReceiver.class);
+        intent.putExtra("id", id);
+        PendingIntent pending = PendingIntent.getBroadcast(Water_Register.this, (int) id, intent, 0); //getPendingIntent 라는 method에 보내줌
+        if (water_alarmData.repeat) {
+            waterAlarmManager.setRepeating(AlarmManager.RTC_WAKEUP, SetTriggerTime(water_alarmData), 3600000, pending);
+        } else {
+            waterAlarmManager.set(AlarmManager.RTC_WAKEUP, SetTriggerTime(water_alarmData), pending);
+        }
+    }
+
+    private long SetTriggerTime (Water_AlarmData water_alarmData) {
+        // current Time
+        long atime = System.currentTimeMillis(); //현재시간 저장
+        // timepicker
+        Calendar curTime = Calendar.getInstance(); //캘린더 변수 생성
+        curTime.set(Calendar.HOUR_OF_DAY, water_alarmData.hour); //캘린더에 시간 저장
+        curTime.set(Calendar.MINUTE, water_alarmData.minute); //캘린더에 분 저장
+        curTime.set(Calendar.SECOND, 0); //초, millisecond 0으로 넣음
+        curTime.set(Calendar.MILLISECOND, 0);
+        long btime = curTime.getTimeInMillis();  //calendar를 btime에 저장
+        long triggerTime = btime; //b time 을 triggertime에 저장
+        if (atime > btime) //크기 비교해서
+            triggerTime += 1000 * 60 * 60 * 24; //현재시간이 더 나중일 경우에 시작시간에 하루를 더함
+
+        return triggerTime;
     }
 
     private void SetCustomActionBar () {

@@ -1,5 +1,9 @@
 package com.seed.android.danbi;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,6 +15,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * Created by kkss2 on 2018-04-04.
@@ -18,9 +23,14 @@ import java.util.ArrayList;
 
 public class Water_CustomAdapter extends RecyclerView.Adapter<Water_CustomAdapter.ViewHolder> {
     private ArrayList<Water_AlarmData> waterDatas;
+    private Context context;
 
-    public Water_CustomAdapter (ArrayList<Water_AlarmData> waterDatas) {
+    private AlarmManager waterAlarmManager;
+
+
+    public Water_CustomAdapter (ArrayList<Water_AlarmData> waterDatas, Context context) {
         this.waterDatas = waterDatas;
+        this.context = context;
     }
 
     @Override
@@ -35,7 +45,7 @@ public class Water_CustomAdapter extends RecyclerView.Adapter<Water_CustomAdapte
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         final Water_AlarmData temp = waterDatas.get(position);
         String time;
         if (temp.hour >= 12) {
@@ -85,7 +95,7 @@ public class Water_CustomAdapter extends RecyclerView.Adapter<Water_CustomAdapte
         holder.switch_on.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                //알람 생기기
+                Watering(position);
                 if (isChecked) {
                     holder.textView_am.setTextColor(Color.BLACK);
                     holder.textView_time.setTextColor(Color.BLACK);
@@ -94,6 +104,7 @@ public class Water_CustomAdapter extends RecyclerView.Adapter<Water_CustomAdapte
                         holder.imageButton_repeat.setImageResource(R.drawable.alarm_everyday_icon_bk);
                     }
                 } else {
+                    WaterCancel(position);
                     holder.textView_am.setTextColor(Color.rgb(190,190,190));
                     holder.textView_time.setTextColor(Color.rgb(190,190,190));
                     holder.imageButton_repeat.setImageResource(R.drawable.alarm_everyday_icon_gray);
@@ -106,6 +117,50 @@ public class Water_CustomAdapter extends RecyclerView.Adapter<Water_CustomAdapte
     @Override
     public int getItemCount() {
         return waterDatas.size();
+    }
+
+    public void Watering (int position) {
+        waterAlarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        Water_AlarmData water_alarmData = waterDatas.get(position);
+        long id = water_alarmData.getId();
+        Intent intent = new Intent(context, Water_AlarmReceiver.class);
+        intent.putExtra("id", id);
+        PendingIntent pending = PendingIntent.getBroadcast(context, (int) id, intent, 0); //getPendingIntent 라는 method에 보내줌
+        if (water_alarmData.repeat) {
+            waterAlarmManager.setRepeating(AlarmManager.RTC_WAKEUP, SetTriggerTime(water_alarmData), 3600000, pending);
+        } else {
+            waterAlarmManager.set(AlarmManager.RTC_WAKEUP, SetTriggerTime(water_alarmData), pending);
+        }
+
+    }
+
+    public void WaterCancel (int position) {
+        Water_AlarmData water_alarmData = waterDatas.get(position);
+        long id = water_alarmData.getId();
+        waterAlarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(context, Water_AlarmReceiver.class);
+        PendingIntent sender = PendingIntent.getBroadcast(context, (int) id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        if (sender != null) {
+            waterAlarmManager.cancel(sender);
+            sender.cancel() ;
+        }
+    }
+
+    private long SetTriggerTime (Water_AlarmData water_alarmData) {
+        // current Time
+        long atime = System.currentTimeMillis(); //현재시간 저장
+        // timepicker
+        Calendar curTime = Calendar.getInstance(); //캘린더 변수 생성
+        curTime.set(Calendar.HOUR_OF_DAY, water_alarmData.hour); //캘린더에 시간 저장
+        curTime.set(Calendar.MINUTE, water_alarmData.minute); //캘린더에 분 저장
+        curTime.set(Calendar.SECOND, 0); //초, millisecond 0으로 넣음
+        curTime.set(Calendar.MILLISECOND, 0);
+        long btime = curTime.getTimeInMillis();  //calendar를 btime에 저장
+        long triggerTime = btime; //b time 을 triggertime에 저장
+        if (atime > btime) //크기 비교해서
+            triggerTime += 1000 * 60 * 60 * 24; //현재시간이 더 나중일 경우에 시작시간에 하루를 더함
+
+        return triggerTime;
     }
 
 
