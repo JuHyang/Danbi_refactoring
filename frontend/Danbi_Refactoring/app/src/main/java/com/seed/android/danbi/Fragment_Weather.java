@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 @SuppressLint("ValidFragment")
 
 public class Fragment_Weather extends Fragment {
+    String appid = "3547a6ef5779bc93134f4a4d3d5bd995";
     Context context;
 
     public Fragment_Weather (Context context) {

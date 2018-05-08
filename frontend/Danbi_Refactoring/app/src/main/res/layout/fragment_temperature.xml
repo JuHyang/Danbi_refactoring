@@ -3,21 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:layout_editor_absoluteY="81dp">
+    android:layout_height="match_parent">
 
-    <TextView
+
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:background="#f0f0f0"
-        android:fontFamily="@font/junggt110"
-        android:text="* 작물 종류 변경은 우측 상단의 메뉴의 [재배 환경 설정]에서 수정 가능합니다."
-        android:textColor="#8b8b8b"
-        android:textSize="10dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/temp_info_txt" />
 
     <ImageButton
         android:id="@+id/imageButton_refresh"

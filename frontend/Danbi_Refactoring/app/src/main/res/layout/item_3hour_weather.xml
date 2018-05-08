@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+
+    <LinearLayout
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="15°C"
+            android:textSize="8dp"
+            android:fontFamily="@font/junggt140"
+            android:textColor="@android:color/black"/>
+
+        <ImageView
+            android:layout_marginTop="10dp"
+            android:id="@+id/imageView_3hour_weather"
+            android:layout_width="35dp"
+            android:layout_height="30dp"
+            app:srcCompat="@drawable/cloud" />
+
+        <TextView
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="8dp"
+            android:text="12시"
+            android:fontFamily="@font/junggt140"
+            android:textColor="@android:color/white"
+            android:background="@color/main_color"/>
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>
