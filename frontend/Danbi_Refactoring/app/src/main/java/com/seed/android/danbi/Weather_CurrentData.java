@@ -1,5 +1,7 @@
 package com.seed.android.danbi;
 
+import java.util.ArrayList;
+
 /**
  * Created by kkss2 on 2018-05-08.
  */
@@ -7,15 +9,16 @@ package com.seed.android.danbi;
 public class Weather_CurrentData {
     Main main;
     Wind wind;
-    Weather weather;
+    ArrayList<Weather> weather;
     String name;
+    String dt_txt;
 
     String wind_deg;
     String weather_main;
     int image_weather;
 
     public void setWeather () {
-        int id = weather.id;
+        int id = weather.get(0).id;
 
         if (id == 800 || 700 < id && id < 761) {
             weather_main = "맑음";

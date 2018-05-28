@@ -8,4 +8,5 @@ public class Main {
     Double temp;
     int pressure;
     int humidity;
+
 }

@@ -5,8 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.Switch;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -16,10 +15,10 @@ import java.util.ArrayList;
  */
 
 public class Weather_3hour_CustomAdapter extends RecyclerView.Adapter<Weather_3hour_CustomAdapter.ViewHolder> {
-    ArrayList<Weather_3hourData> weather_3hourDatas;
+    ArrayList<Weather_3hour_listData> weather_3hourDatas;
     Context context;
 
-    public Weather_3hour_CustomAdapter (ArrayList<Weather_3hourData> weather_3hourDatas, Context context) {
+    public Weather_3hour_CustomAdapter (ArrayList<Weather_3hour_listData> weather_3hourDatas, Context context) {
         this.weather_3hourDatas = weather_3hourDatas;
         this.context = context;
     }
@@ -37,7 +36,10 @@ public class Weather_3hour_CustomAdapter extends RecyclerView.Adapter<Weather_3h
 
     @Override
     public void onBindViewHolder(final Weather_3hour_CustomAdapter.ViewHolder holder, final int position) {
-        final Weather_3hourData temp = weather_3hourDatas.get(position);
+        final Weather_3hour_listData temp = weather_3hourDatas.get(position);
+        holder.textView_temp_3hour.setText(temp.temp);
+        holder.imageView_3hour_weather.setImageResource(temp.img);
+        holder.textView_time_3hour.setText(temp.time);
     }
 
     @Override
@@ -46,18 +48,15 @@ public class Weather_3hour_CustomAdapter extends RecyclerView.Adapter<Weather_3h
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView textView_am;
-        TextView textView_time;
-        ImageButton imageButton_repeat;
-        TextView textVIew_min;
-        Switch switch_on;
+        TextView textView_temp_3hour;
+        ImageView imageView_3hour_weather;
+        TextView textView_time_3hour;
         public ViewHolder(View itemView) {
             super(itemView);
-            textView_am = itemView.findViewById(R.id.textView_am);
-            textView_time = itemView.findViewById(R.id.textView_time);
-            imageButton_repeat = itemView.findViewById(R.id.imageButton_repeat);
-            textVIew_min = itemView.findViewById(R.id.textVIew_min);
-            switch_on = itemView.findViewById(R.id.switch_on);
+            textView_temp_3hour = itemView.findViewById(R.id.textView_temp_3hour);
+            imageView_3hour_weather = itemView.findViewById(R.id.imageView_3hour_weather);
+            textView_time_3hour = itemView.findViewById(R.id.textView_time_3hour);
+
         }
     }
 }

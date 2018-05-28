@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +36,8 @@ public class Fragment_Weather extends Fragment {
     private Weather_GpsInfo gps;
     private Weather_CurrentData currentData;
 
+    private Weather_3hourData hourData;
+    private ArrayList<Weather_3hour_listData> hour_listDatas;
     private RecyclerView recyclerView_3hour_weather;
     private RecyclerView.Adapter weather_3hour_Adapter;
     private RecyclerView.LayoutManager weather_3hour_LayoutManager;
@@ -59,6 +62,7 @@ public class Fragment_Weather extends Fragment {
     }
 
     public void InitModel () {
+        hour_listDatas = new ArrayList<>();
         cityDatas = (ArrayList) Weather_CityData.listAll(Weather_CityData.class);
         if (cityDatas.size() == 0 ) {
             cityData = new Weather_CityData();
@@ -77,6 +81,11 @@ public class Fragment_Weather extends Fragment {
         imageView_currentweather = view.findViewById(R.id.imageView_currentweather);
 
         recyclerView_3hour_weather = view.findViewById(R.id.recyclerView_3hour_weather);
+        recyclerView_3hour_weather.setHasFixedSize(true);
+        weather_3hour_LayoutManager = new LinearLayoutManager(context);
+        recyclerView_3hour_weather.setLayoutManager(weather_3hour_LayoutManager);
+        weather_3hour_Adapter = new Weather_3hour_CustomAdapter(hour_listDatas, context);
+        recyclerView_3hour_weather.setAdapter(weather_3hour_Adapter);
 
         recyclerView_weekly_weather = view.findViewById(R.id.recyclerView_weekly_weather);
     }
@@ -114,6 +123,31 @@ public class Fragment_Weather extends Fragment {
 
             @Override
             public void onFailure(Call<Weather_CurrentData> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void Get3HourWeather () {
+        ServerInterface serverinterface = new Weather_Repo().getService();
+        Call<Weather_3hourData> c = serverinterface.HourWeather(cityData.lat, cityData.lon);
+        c.enqueue(new Callback<Weather_3hourData>() {
+            @Override
+            public void onResponse(Call<Weather_3hourData> call, Response<Weather_3hourData> response) {
+                hourData = response.body();
+                for (int i = 0; i < 8; i ++) {
+                    Weather_3hour_listData listData = new Weather_3hour_listData();
+                    hourData.list.get(i).setWeather();
+                    listData.temp = String.valueOf(hourData.list.get(i).main.temp.intValue())  + "°C";
+                    listData.img = hourData.list.get(i).image_weather;
+                    listData.time = hourData.list.get(i).dt_txt;
+
+                    hour_listDatas.add(listData);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Weather_3hourData> call, Throwable t) {
 
             }
         });

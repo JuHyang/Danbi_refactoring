@@ -23,7 +23,7 @@ public interface ServerInterface {
     Call<Weather_CurrentData> CurrentWeahter (@Path ("lat") double lat, @Path ("lon") double lon);
 
     @GET("/data/2.5/forecast?lat={lat}&lon={lon}&appid=8cbb933c3116dd59f65e17923de6240e&units=metric&cnt=8")
-    Call<Weather_CurrentData> HourWeather (@Path ("lat") double lat, @Path ("lon") double lon);
+    Call<Weather_3hourData> HourWeather (@Path ("lat") double lat, @Path ("lon") double lon);
 
     @GET("/data/2.5/forecast/daily?lat={lat}&lon={lon}&appid=8cbb933c3116dd59f65e17923de6240e&units=metric&cnt=7")
     Call<Weather_CurrentData> WeeklyWeather (@Path ("lat") double lat, @Path ("lon") double lon);
