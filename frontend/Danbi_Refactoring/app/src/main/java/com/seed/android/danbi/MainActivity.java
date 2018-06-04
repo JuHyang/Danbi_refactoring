@@ -1,6 +1,5 @@
 package com.seed.android.danbi;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -13,8 +12,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
-
-import com.camera.simplemjpeg.MjpegActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -43,17 +40,17 @@ public class MainActivity extends AppCompatActivity {
         TabLayout tabLayout = findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
-        imageButton_cctv = findViewById(R.id.imageButton_cctv);
+
     }
 
     public void AboutView () {
-        imageButton_cctv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent (MainActivity.this, MjpegActivity.class);
-                startActivity(intent);
-            }
-        });
+//        imageButton_cctv.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent (MainActivity.this, MjpegActivity.class);
+//                startActivity(intent);
+//            }
+//        });
     }
 
     private void SetCustomActionBar () {
@@ -65,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
 
         View actionBarView = LayoutInflater.from(this).inflate(R.layout.actionbar_main, null);
         actionBar.setCustomView(actionBarView);
+
+        imageButton_cctv = actionBarView.findViewById(R.id.imageButton_cctv);
 
         toolbar = (Toolbar) actionBarView.getParent();
         toolbar.setContentInsetsAbsolute(0,0);

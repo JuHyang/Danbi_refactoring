@@ -59,19 +59,18 @@ public class Water_Register extends AppCompatActivity {
         textView_repeat = findViewById(R.id.textView_repeat);
         seekBar_water_min = findViewById(R.id.seekBar_water_min);
         radioButton = findViewById(R.id.radioButton);
-        imageButton_register_back = findViewById(R.id.imageButton_register_back);
-        textView_register_save = findViewById(R.id.textView_register_save);
+
+
     }
 
     public void AboutView () {
-        hour_timePicker = timePicker.getCurrentHour();
-        minute_timePicker = timePicker.getCurrentMinute();
-        timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
-            public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-                hour_timePicker = hourOfDay;
-                minute_timePicker = minute;
-            }
-        });
+
+//        timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+//            public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+//                hour_timePicker = hourOfDay;
+//                minute_timePicker = minute;
+//            }
+//        });
 
         bool_register = switch_register.isChecked();
 //        switch_register.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -125,6 +124,8 @@ public class Water_Register extends AppCompatActivity {
         textView_register_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                hour_timePicker = timePicker.getCurrentHour();
+                minute_timePicker = timePicker.getCurrentMinute();
                 water_alarmData = new Water_AlarmData(hour_timePicker, minute_timePicker, during_seekBar, bool_register, bool_repeat);
                 water_alarmData.save();
                 Watering();
@@ -173,6 +174,8 @@ public class Water_Register extends AppCompatActivity {
         actionBar.setDisplayShowTitleEnabled(false);
 
         View actionBarView = LayoutInflater.from(this).inflate(R.layout.actionbar_water_register, null);
+        imageButton_register_back = actionBarView.findViewById(R.id.imageButton_register_back);
+        textView_register_save = actionBarView.findViewById(R.id.textView_register_save);
         actionBar.setCustomView(actionBarView);
 
         toolbar = (Toolbar) actionBarView.getParent();

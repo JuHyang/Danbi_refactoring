@@ -27,7 +27,7 @@ public class Weather_3hour_CustomAdapter extends RecyclerView.Adapter<Weather_3h
     public Weather_3hour_CustomAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_water, parent, false);
+                .inflate(R.layout.item_3hour_weather, parent, false);
         // set the view's size, margins, paddings and layout parameters
 
         Weather_3hour_CustomAdapter.ViewHolder vh = new Weather_3hour_CustomAdapter.ViewHolder(v);

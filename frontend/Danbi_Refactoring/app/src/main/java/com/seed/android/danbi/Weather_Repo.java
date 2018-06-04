@@ -20,7 +20,7 @@ public class Weather_Repo {
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://http://api.openweathermap.org")
+                .baseUrl("http://api.openweathermap.org")
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();

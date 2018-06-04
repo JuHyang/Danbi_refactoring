@@ -61,7 +61,7 @@ public class Water_CustomAdapter extends RecyclerView.Adapter<Water_CustomAdapte
         }
         time = time + ":" + String.valueOf(temp.minute);
         holder.textView_time.setText(time);
-        holder.textVIew_min.setText(temp.during);
+        holder.textVIew_min.setText(String.valueOf(temp.during) + "분");
         if (temp.repeat) {
             holder.imageButton_repeat.setImageResource(R.drawable.alarm_everyday_icon_bk);
         } else {

@@ -13,7 +13,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,7 +38,7 @@ public class Fragment_Temperature extends Fragment {
     private ImageButton imageButton_refresh;
     private TextView textView_temp, textView_temp_, textView_status_temp, textView_species_temp, textView_proper_temp;
     private TextView textView_hum, textView_hum_, textView_status_hum, textView_species_hum, textView_proper_hum;
-    private Switch switch_temp_auto;
+//    private Switch switch_temp_auto;
 
     private AlarmManager tempAlarmManager;
 
@@ -60,6 +59,13 @@ public class Fragment_Temperature extends Fragment {
         return layout;
     }
 
+    public void onResume () {
+        super.onResume();
+
+        InitModel();
+        AboutView();
+    }
+
     public void InitModel() {
         temp_datas = (ArrayList) Temperature_SettingData.listAll(Temperature_SettingData.class);
         if (temp_datas.size() == 0) {
@@ -74,7 +80,7 @@ public class Fragment_Temperature extends Fragment {
     public void InitVIew(View view) {
         imageButton_refresh = view.findViewById(R.id.imageButton_refresh);
 
-        switch_temp_auto = view.findViewById(R.id.switch_temp_auto);
+//        switch_temp_auto = view.findViewById(R.id.switch_temp_auto);
 
         textView_temp = view.findViewById(R.id.textView_temp);
         textView_temp_ = view.findViewById(R.id.textView_temp_);
@@ -97,20 +103,20 @@ public class Fragment_Temperature extends Fragment {
             }
         });
 
-        switch_temp_auto.setChecked(temperature_settingData.auto);
-        switch_temp_auto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (switch_temp_auto.isChecked()) {
-                    AutoTempGetData();
-                    temperature_settingData.auto = true;
-                } else {
-                    AlarmTempCancel();
-                    temperature_settingData.auto = false;
-                }
-                temperature_settingData.save();
-            }
-        });
+//        switch_temp_auto.setChecked(temperature_settingData.auto);
+//        switch_temp_auto.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (switch_temp_auto.isChecked()) {
+//                    AutoTempGetData();
+//                    temperature_settingData.auto = true;
+//                } else {
+//                    AlarmTempCancel();
+//                    temperature_settingData.auto = false;
+//                }
+//                temperature_settingData.save();
+//            }
+//        });
     }
 
     public void AutoTempGetData () {

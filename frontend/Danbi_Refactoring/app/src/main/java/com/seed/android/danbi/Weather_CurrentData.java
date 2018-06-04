@@ -7,9 +7,9 @@ import java.util.ArrayList;
  */
 
 public class Weather_CurrentData {
-    Main main;
-    Wind wind;
-    ArrayList<Weather> weather;
+    Weather_Main main;
+    Weather_Wind wind;
+    ArrayList<Weather_id> weather;
     String name;
     String dt_txt;
 
@@ -74,7 +74,7 @@ public class Weather_CurrentData {
             wind_deg = "북서";
     }
 
-    public Main getMain() {
+    public Weather_Main getMain() {
         return main;
     }
 

@@ -13,7 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.github.clans.fab.FloatingActionButton;
+import android.support.design.widget.FloatingActionButton;
 import com.orm.query.Select;
 
 import java.util.ArrayList;
@@ -50,8 +50,19 @@ public class Fragment_Water extends Fragment {
         return layout;
     }
 
+    public void onResume () {
+        super.onResume();
+
+        InitModel();
+        water_CustomAdapter.notifyDataSetChanged();
+        AboutView();
+    }
+
     public void InitModel () {
-        waterDatas = (ArrayList<Water_AlarmData>) Select.from(Water_AlarmData.class).orderBy("hour, minute").list();
+        waterDatas = (ArrayList<Water_AlarmData>) Water_AlarmData.listAll(Water_AlarmData.class);
+        if (waterDatas.size() != 0) {
+            waterDatas = (ArrayList<Water_AlarmData>) Select.from(Water_AlarmData.class).orderBy("hour, minute").list();
+        }
     }
 
     public void InitView (View view) {
@@ -82,6 +93,7 @@ public class Fragment_Water extends Fragment {
                 new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
+                        OpenDeleteDialog(position);
                     }
 
                     @Override
