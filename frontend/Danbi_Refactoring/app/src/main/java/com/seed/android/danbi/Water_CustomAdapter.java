@@ -84,10 +84,18 @@ public class Water_CustomAdapter extends RecyclerView.Adapter<Water_CustomAdapte
                 @Override
                 public void onClick(View v) {
                     if (temp.repeat) {
+                        temp.repeat = false;
+                        WaterCancel(position);
+                        Watering(position);
                         holder.imageButton_repeat.setImageResource(R.drawable.alarm_everyday_icon_gray);
                     } else {
+                        temp.repeat = true;
+                        WaterCancel(position);
+                        Watering(position);
                         holder.imageButton_repeat.setImageResource(R.drawable.alarm_everyday_icon_bk);
                     }
+
+                    temp.save();
                 }
             });
         }
@@ -95,8 +103,10 @@ public class Water_CustomAdapter extends RecyclerView.Adapter<Water_CustomAdapte
         holder.switch_on.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Watering(position);
                 if (isChecked) {
+                    temp.onoff = isChecked;
+                    temp.save();
+                    Watering(position);
                     holder.textView_am.setTextColor(Color.BLACK);
                     holder.textView_time.setTextColor(Color.BLACK);
                     holder.textVIew_min.setTextColor(Color.BLACK);
@@ -104,6 +114,8 @@ public class Water_CustomAdapter extends RecyclerView.Adapter<Water_CustomAdapte
                         holder.imageButton_repeat.setImageResource(R.drawable.alarm_everyday_icon_bk);
                     }
                 } else {
+                    temp.onoff = isChecked;
+                    temp.save();
                     WaterCancel(position);
                     holder.textView_am.setTextColor(Color.rgb(190,190,190));
                     holder.textView_time.setTextColor(Color.rgb(190,190,190));
@@ -112,6 +124,7 @@ public class Water_CustomAdapter extends RecyclerView.Adapter<Water_CustomAdapte
                 }
             }
         });
+
     }
 
     @Override
@@ -179,4 +192,5 @@ public class Water_CustomAdapter extends RecyclerView.Adapter<Water_CustomAdapte
             switch_on = itemView.findViewById(R.id.switch_on);
         }
     }
+
 }

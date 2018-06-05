@@ -6,7 +6,9 @@ package com.seed.android.danbi;
 
 public class Weather_Main {
     Double temp;
-    int pressure;
+    Double pressure;
     int humidity;
+    Double temp_min;
+    Double temp_max;
 
 }

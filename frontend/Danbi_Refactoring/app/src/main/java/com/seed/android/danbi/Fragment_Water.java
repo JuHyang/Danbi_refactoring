@@ -5,15 +5,16 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import android.support.design.widget.FloatingActionButton;
 import com.orm.query.Select;
 
 import java.util.ArrayList;
@@ -23,10 +24,10 @@ import java.util.ArrayList;
  */
 
 @SuppressLint("ValidFragment")
-
+// 각 데이터 삭제 / 반복 변경 / onoff 손봐야함
 public class Fragment_Water extends Fragment {
     Context context;
-    private ArrayList<Water_AlarmData> waterDatas;
+    private ArrayList<Water_AlarmData> waterDatas = new ArrayList<>();
 
     private RecyclerView recyclerView_water;
     private RecyclerView.Adapter water_CustomAdapter;
@@ -46,23 +47,24 @@ public class Fragment_Water extends Fragment {
         InitModel();
         InitView(layout);
         AboutView ();
+        water_CustomAdapter.notifyDataSetChanged();
 
         return layout;
     }
 
     public void onResume () {
         super.onResume();
-
+        Log.v("태그", "OnResume");
         InitModel();
+        Log.v("Datasize", String.valueOf(waterDatas.size()));
         water_CustomAdapter.notifyDataSetChanged();
         AboutView();
     }
 
     public void InitModel () {
-        waterDatas = (ArrayList<Water_AlarmData>) Water_AlarmData.listAll(Water_AlarmData.class);
-        if (waterDatas.size() != 0) {
-            waterDatas = (ArrayList<Water_AlarmData>) Select.from(Water_AlarmData.class).orderBy("hour, minute").list();
-        }
+        waterDatas.clear();
+        ArrayList<Water_AlarmData> tempDatas = (ArrayList<Water_AlarmData>) Select.from(Water_AlarmData.class).orderBy("hour, minute").list();
+        waterDatas.addAll(tempDatas);
     }
 
     public void InitView (View view) {
@@ -89,18 +91,7 @@ public class Fragment_Water extends Fragment {
                 startActivity(intent);
             }
         });
-        recyclerView_water.addOnItemTouchListener(new RecyclerItemClickListener(context, recyclerView_water,
-                new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(View view, int position) {
-                        OpenDeleteDialog(position);
-                    }
 
-                    @Override
-                    public void onLongItemClick(View view, int position) {
-                        OpenDeleteDialog(position);
-                    }
-                }));
     }
 
     public void OpenDeleteDialog (final int position) {

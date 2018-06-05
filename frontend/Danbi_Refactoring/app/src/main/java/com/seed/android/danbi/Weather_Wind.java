@@ -6,5 +6,5 @@ package com.seed.android.danbi;
 
 public class Weather_Wind {
     Double speed;
-    int deg;
+    Double deg;
 }

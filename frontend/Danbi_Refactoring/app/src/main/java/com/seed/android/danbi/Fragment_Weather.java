@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
@@ -47,13 +46,13 @@ public class Fragment_Weather extends Fragment {
     private Weather_CurrentData currentData;
 
     private Weather_3hourData hourData;
-    private ArrayList<Weather_3hour_listData> hour_listDatas;
+    private ArrayList<Weather_3hour_listData> hour_listDatas = new ArrayList<>();
     private RecyclerView recyclerView_3hour_weather;
     private RecyclerView.Adapter weather_3hour_Adapter;
     private RecyclerView.LayoutManager weather_3hour_LayoutManager;
 
     private Weather_weeklyData weeklyData;
-    private ArrayList<Weather_weekly_listData> weekly_listDatas;
+    private ArrayList<Weather_weekly_listData> weekly_listDatas = new ArrayList<>();
     private RecyclerView recyclerView_weekly_weather;
     private RecyclerView.Adapter weather_weekly_Adapter;
     private RecyclerView.LayoutManager weather_weekly_LayoutManager;
@@ -66,6 +65,7 @@ public class Fragment_Weather extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         View layout = inflater.inflate(R.layout.fragment_weather, container, false);
+
         InitModel();
         InitView (layout);
         CheckPermission();
@@ -83,8 +83,6 @@ public class Fragment_Weather extends Fragment {
     }
 
     public void InitModel () {
-        hour_listDatas = new ArrayList<>();
-        weekly_listDatas = new ArrayList<>();
         cityDatas = (ArrayList) Weather_CityData.listAll(Weather_CityData.class);
         if (cityDatas.size() == 0 ) {
             cityData = new Weather_CityData();
@@ -104,7 +102,7 @@ public class Fragment_Weather extends Fragment {
 
         recyclerView_3hour_weather = view.findViewById(R.id.recyclerView_3hour_weather);
         recyclerView_3hour_weather.setHasFixedSize(true);
-        weather_3hour_LayoutManager = new LinearLayoutManager(context);
+        weather_3hour_LayoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
         recyclerView_3hour_weather.setLayoutManager(weather_3hour_LayoutManager);
         weather_3hour_Adapter = new Weather_3hour_CustomAdapter(hour_listDatas, context);
         recyclerView_3hour_weather.setAdapter(weather_3hour_Adapter);
@@ -119,16 +117,16 @@ public class Fragment_Weather extends Fragment {
 
     public void AboutView () {
         GetCurrentWeather ();
-//        Get3HourWeather();
-//        GetWeeklyWeather();
+        Get3HourWeather();
+        GetWeeklyWeather();
 
         imageButton_location.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 GetLocation (cityData);
                 GetCurrentWeather ();
-//                Get3HourWeather();
-//                GetWeeklyWeather();
+                Get3HourWeather();
+                GetWeeklyWeather();
             }
         });
 
@@ -138,12 +136,12 @@ public class Fragment_Weather extends Fragment {
         PermissionListener permissionListener = new PermissionListener() {
             @Override
             public void onPermissionGranted() {
-                Toast.makeText(context, "권한 허가", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(context, "권한 허가", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onPermissionDenied(ArrayList<String> deniedPermissions) {
-                Toast.makeText(context,"권한 거부\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(context,"권한 거부\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
             }
         };
 
@@ -156,21 +154,19 @@ public class Fragment_Weather extends Fragment {
     }
 
     public void GetCurrentWeather () {
-        Log.d("날씨", "현재날씨");
         ServerInterface serverInterface = new Weather_Repo().getService();
         Call<Weather_CurrentData> c = serverInterface.CurrentWeahter(cityData.lat, cityData.lon, appid, units);
         c.enqueue(new Callback<Weather_CurrentData>() {
             @Override
             public void onResponse(Call<Weather_CurrentData> call, Response<Weather_CurrentData> response) {
-                Log.d("날씨", "현재날씨");
                 currentData = response.body();
                 currentData.setWind();
                 currentData.setWeather();
                 textView_cityname.setText(currentData.name);
                 textView_currenttemp.setText(String.valueOf(currentData.main.temp) + "°C");
                 textView_currentstatus.setText(currentData.weather_main);
-                String detail = "풍속 " + String.valueOf(currentData.wind.speed) + "m/s" +
-                        "풍향 " + currentData.wind_deg + "습도 " + String.valueOf(currentData.main.humidity) + "%";
+                String detail = "풍속 : " + String.valueOf(currentData.wind.speed) + "m/s" +
+                        "  풍향 : " + currentData.wind_deg + "  습도 : " + String.valueOf(currentData.main.humidity) + "%";
                 textView_currentdetail.setText(detail);
                 imageView_currentweather.setImageResource(currentData.image_weather);
 
@@ -178,24 +174,24 @@ public class Fragment_Weather extends Fragment {
 
             @Override
             public void onFailure(Call<Weather_CurrentData> call, Throwable t) {
-                Log.d("태그", "실패");
+                Log.d("태그", t.getMessage());
             }
         });
     }
 
     public void Get3HourWeather () {
-        Log.d("날씨", "3시간날씨");
         ServerInterface serverinterface = new Weather_Repo().getService();
-        Call<Weather_3hourData> c = serverinterface.HourWeather(cityData.lat, cityData.lon);
+        Call<Weather_3hourData> c = serverinterface.HourWeather(cityData.lat, cityData.lon, appid, units, 8);
         c.enqueue(new Callback<Weather_3hourData>() {
             @Override
             public void onResponse(Call<Weather_3hourData> call, Response<Weather_3hourData> response) {
+                hour_listDatas.clear();
                 hourData = response.body();
                 String temptime;
                 for (int i = 0; i < 8; i ++) {
                     Weather_3hour_listData listData = new Weather_3hour_listData();
                     hourData.list.get(i).setWeather();
-                    listData.temp = String.valueOf(hourData.list.get(i).main.temp.intValue())  + "°C";
+                    listData.temp = String.valueOf(hourData.list.get(i).main.temp.intValue()) + "°C";
                     listData.img = hourData.list.get(i).image_weather;
                     temptime = hourData.list.get(i).dt_txt;
                     int time = Integer.parseInt(temptime.split(" ")[1].split(":")[0]) + 8;
@@ -205,24 +201,27 @@ public class Fragment_Weather extends Fragment {
                     listData.time = String.valueOf(time) + "시";
 
                     hour_listDatas.add(listData);
+                    weather_3hour_Adapter.notifyDataSetChanged();
                 }
+                Log.d("날씨", "3시간날씨");
+                Log.d("hour_listDatas", String.valueOf(hour_listDatas.size()));
             }
 
             @Override
             public void onFailure(Call<Weather_3hourData> call, Throwable t) {
-
+                Log.d("태그", t.getMessage());
             }
         });
         weather_3hour_Adapter.notifyDataSetChanged();
     }
 
     public void GetWeeklyWeather () {
-        Log.d("날씨", "주간날씨");
         ServerInterface serverinterface = new Weather_Repo().getService();
-        Call<Weather_weeklyData> c = serverinterface.WeeklyWeather(cityData.lat, cityData.lon);
+        Call<Weather_weeklyData> c = serverinterface.WeeklyWeather(cityData.lat, cityData.lon, appid, units, 7);
         c.enqueue(new Callback<Weather_weeklyData>() {
             @Override
             public void onResponse(Call<Weather_weeklyData> call, Response<Weather_weeklyData> response) {
+                weekly_listDatas.clear();
                 weeklyData = response.body();
                 Calendar calendar = Calendar.getInstance();
                 int day = calendar.get(Calendar.DAY_OF_WEEK); //일요일은 1 토요일은 7
@@ -255,13 +254,16 @@ public class Fragment_Weather extends Fragment {
                     listData.img = weeklyData.list.get(i).image_weather;
 
                     weekly_listDatas.add(listData);
+                    weather_weekly_Adapter.notifyDataSetChanged();
                     day = day + 1;
                 }
+                Log.d("날씨", "주간날씨");
+                Log.d("weekly_listDatas", String.valueOf(weekly_listDatas.size()));
             }
 
             @Override
             public void onFailure(Call<Weather_weeklyData> call, Throwable t) {
-
+                Log.d("태그", t.getMessage());
             }
         });
         weather_weekly_Adapter.notifyDataSetChanged();

@@ -11,6 +11,7 @@
 
     <permission android:name="android.permission.INTERNET" />
     <permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <!-- [END retrofit_permission] -->
 

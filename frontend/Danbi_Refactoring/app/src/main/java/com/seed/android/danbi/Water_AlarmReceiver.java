@@ -65,6 +65,10 @@ public class Water_AlarmReceiver extends BroadcastReceiver{
                                     public void onResponse(Call<String> call, Response<String> response) {
                                         if (response.body().equals("1")) {
                                             timer[0].cancel();
+                                            if (!target.repeat) {
+                                                target.onoff = false;
+                                                target.save();
+                                            }
                                         }
                                     }
 

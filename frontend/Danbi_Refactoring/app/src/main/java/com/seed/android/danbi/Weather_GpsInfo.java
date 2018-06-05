@@ -1,5 +1,6 @@
 package com.seed.android.danbi;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Service;
 import android.content.Context;
@@ -13,6 +14,8 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
+
+import java.util.List;
 
 /**
  * Created by kkss2 on 2018-05-09.
@@ -66,7 +69,10 @@ public class Weather_GpsInfo extends Service implements LocationListener {
                 this.isGetLocation = true;
                 // 네트워크 정보로 부터 위치값 가져오기
                 if (isNetworkEnabled) {
-                    if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    if (ActivityCompat.checkSelfPermission((Activity) mContext, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission((Activity) mContext, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions((Activity) mContext, new String[]{
+                                android.Manifest.permission.ACCESS_FINE_LOCATION
+                        }, 10);
                         // TODO: Consider calling
                         //    ActivityCompat#requestPermissions
                         // here to request the missing permissions, and then overriding
@@ -99,8 +105,9 @@ public class Weather_GpsInfo extends Service implements LocationListener {
                                 MIN_TIME_BW_UPDATES,
                                 MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
                         if (locationManager != null) {
-                            location = locationManager
-                                    .getLastKnownLocation(LocationManager.GPS_PROVIDER);
+//                            location = locationManager
+//                                    .getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                            location = getLastKnownLocation();
                             if (location != null) {
                                 lat = location.getLatitude();
                                 lon = location.getLongitude();
@@ -119,8 +126,8 @@ public class Weather_GpsInfo extends Service implements LocationListener {
     /**
      * GPS 종료
      * */
-    public void stopUsingGPS(){
-        if(locationManager != null){
+    public void stopUsingGPS() {
+        if (locationManager != null) {
             locationManager.removeUpdates(Weather_GpsInfo.this);
         }
     }
@@ -128,8 +135,8 @@ public class Weather_GpsInfo extends Service implements LocationListener {
     /**
      * 위도값을 가져옵니다.
      * */
-    public double getLatitude(){
-        if(location != null){
+    public double getLatitude() {
+        if (location != null) {
             lat = location.getLatitude();
         }
         return lat;
@@ -138,8 +145,8 @@ public class Weather_GpsInfo extends Service implements LocationListener {
     /**
      * 경도값을 가져옵니다.
      * */
-    public double getLongitude(){
-        if(location != null){
+    public double getLongitude() {
+        if (location != null) {
             lon = location.getLongitude();
         }
         return lon;
@@ -156,7 +163,7 @@ public class Weather_GpsInfo extends Service implements LocationListener {
      * GPS 정보를 가져오지 못했을때
      * 설정값으로 갈지 물어보는 alert 창
      * */
-    public void showSettingsAlert(){
+    public void showSettingsAlert() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
 
         alertDialog.setTitle("GPS 사용유무셋팅");
@@ -165,7 +172,7 @@ public class Weather_GpsInfo extends Service implements LocationListener {
         // OK 를 누르게 되면 설정창으로 이동합니다.
         alertDialog.setPositiveButton("Settings",
                 new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog,int which) {
+                    public void onClick(DialogInterface dialog, int which) {
                         Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                         mContext.startActivity(intent);
                     }
@@ -204,5 +211,32 @@ public class Weather_GpsInfo extends Service implements LocationListener {
     public void onProviderDisabled(String provider) {
         // TODO Auto-generated method stub
 
+    }
+
+    private Location getLastKnownLocation() {
+        locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
+        List<String> providers = locationManager.getProviders(true);
+        Location bestLocation = null;
+        for (String provider : providers) {
+            if (ActivityCompat.checkSelfPermission(mContext, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mContext, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+//                return TODO;
+            }
+            Location l = locationManager.getLastKnownLocation(provider);
+            if (l == null) {
+                continue;
+            }
+            if (bestLocation == null || l.getAccuracy() < bestLocation.getAccuracy()) {
+                // Found best last known location: %s", l);
+                bestLocation = l;
+            }
+        }
+        return bestLocation;
     }
 }

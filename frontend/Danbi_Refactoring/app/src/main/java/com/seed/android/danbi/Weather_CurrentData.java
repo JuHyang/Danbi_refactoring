@@ -55,7 +55,7 @@ public class Weather_CurrentData {
     }
 
     public void setWind () {
-        int intDegree = wind.deg;
+        int intDegree = wind.deg.intValue();
         if (intDegree == 0 || intDegree == 360)
             wind_deg = "북";
         else if (intDegree == 90)
